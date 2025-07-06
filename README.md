@@ -100,3 +100,16 @@ Exec=/usr/bin/slack --ozone-platform=wayland --enable-features=UseOzonePlatform 
 ```
 
 See: https://www.reddit.com/r/hyprland/comments/1jfo3rj/text_rendering_blurry_after_updates_hyprland/
+
+## Known Issues
+
+### 1Password Developer Mode
+The current version doesn't support the rich approval prompt which is enabled by default. If you experience issues with 1Password SSH agent authentication, try disabling the rich approval prompt in 1Password settings under **Settings** → **Developer** → **Rich approval prompt**.
+
+### Brave Browser Setup
+After installation, remember to set up Brave sync to synchronize your browser data across devices. Go to **Settings** → **Sync** and enable sync for:
+- Extensions
+- History
+- Settings
+- Open tabs
+- Saved tab groups

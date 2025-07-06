@@ -1,22 +1,52 @@
 #!/bin/bash
 
+print_logo() {
+  cat <<"EOF"
+    ______                _ __    __     
+   / ____/______  _______(_) /_  / /__   
+  / /   / ___/ / / / ___/ / __ \/ / _ \  
+ / /___/ /  / /_/ / /__/ / /_/ / /  __/  Dotfiles Setup Tool
+ \____/_/   \__,_/\___/_/_.___/_/\___/   by: martinmose 
+
+EOF
+}
+
+clear
+print_logo
+
+# Exit on any error
+set -e
+
 ORIGINAL_DIR=$(pwd)
 REPO_URL="https://github.com/martinmose/.dotfiles"
 REPO_NAME=".dotfiles"
+DOTFILES_DIR="$HOME/$REPO_NAME"
+
+echo "Setting up personal dotfiles..."
 
 # Check if the repository already exists
-if [ -d "$REPO_NAME" ]; then
-    echo "Repository '$REPO_NAME' already exists. Skipping clone"
+if [ -d "$DOTFILES_DIR" ]; then
+  echo "Repository '$REPO_NAME' already exists. Pulling latest changes..."
+  cd "$DOTFILES_DIR"
+  git pull origin main
 else
-    git clone "$REPO_URL" ~/"$REPO_NAME"
+  echo "Cloning dotfiles repository..."
+  gh repo clone martinmose/.dotfiles "$DOTFILES_DIR"
 fi
 
 # Check if the clone was successful
 if [ $? -eq 0 ]; then
-    echo "Repository cloned successfully."
-    echo "Changing to the repository directory and follow the README.md instructions."
-else
-    echo "Failed to clone the repository."
-    exit 1
-fi
+  echo "Repository ready. Running dotfile installation script..."
+  cd "$DOTFILES_DIR"
 
+  ./dotfile-script.sh linux
+
+  echo ""
+  echo "Dotfiles installed successfully!"
+  echo ""
+
+  cd "$ORIGINAL_DIR"
+else
+  echo "Failed to setup dotfiles repository."
+  exit 1
+fi

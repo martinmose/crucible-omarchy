@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Print the logo
 print_logo() {
   cat <<"EOF"
     ______                _ __    __     
@@ -12,9 +11,15 @@ print_logo() {
 EOF
 }
 
-# Clear screen and show logo
 clear
 print_logo
+
+# Check if script is run with sudo privileges
+if [ "$EUID" -ne 0 ]; then
+  echo "This script requires sudo privileges for package management."
+  echo "Please run: sudo ./run.sh"
+  exit 1
+fi
 
 echo "Personal Omarchy Customization Setup"
 echo "===================================="
@@ -25,7 +30,6 @@ echo "2. Install additional packages you want"
 echo "3. Setup personal dotfiles"
 echo ""
 
-# Ask user what they want to do
 echo "What would you like to do?"
 echo "1) Full setup (remove defaults + install additions + setup dotfiles)"
 echo "2) Remove unwanted default packages only"
@@ -80,4 +84,3 @@ case $choice in
   exit 1
   ;;
 esac
-

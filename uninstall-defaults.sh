@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Print the logo
 print_logo() {
   cat <<"EOF"
     ______                _ __    __     
@@ -12,57 +11,22 @@ print_logo() {
 EOF
 }
 
-# Clear screen and show logo
 clear
 print_logo
 
 # Exit on any error
 set -e
 
-# Source utility functions
 source utils.sh
 
 echo "Removing unwanted default Omarchy packages..."
 
 # Define packages to remove (common Omarchy defaults you might not want)
-# Uncomment the ones you want to remove
 PACKAGES_TO_REMOVE=(
-  # Office/Productivity (if you prefer alternatives)
-  # "libreoffice-fresh"
-
-  # Media applications (if you have preferences)
-  # "vlc"
-  # "obs-studio"
-  # "kdenlive"
-
-  # Image editing (if you prefer alternatives)
-  # "pinta"
-  # "gimp"
-
-  # Communication (if you use different apps)
-  # "signal-desktop"
-
-  # Note taking (if you prefer alternatives)
-  # "obsidian"
-
-  # Games/Entertainment (if not needed)
-  # "steam"
-
-  # Development tools you might not use
-  # "code"  # VS Code
-  # "docker"
-  # "docker-compose"
-
-  # Web browsers (keep only your preferred one)
-  # "firefox"
-  # "chromium"
-
-  # Packages to remove (uncommented = will be removed)
-  "typora"  # Markdown editor (commercial)
-  "dropbox" # Cloud storage
-  "zoom"    # Video conferencing
-
-  # Add more unwanted packages here
+  "alacritty"
+  "typora"
+  "dropbox"
+  "zoom"
 )
 
 # Function to remove packages
@@ -78,7 +42,7 @@ remove_packages() {
 
   if [ ${#to_remove[@]} -ne 0 ]; then
     echo "Removing: ${to_remove[*]}"
-    yay -Rns --noconfirm "${to_remove[@]}"
+    sudo yay -Rns --noconfirm "${to_remove[@]}"
   else
     echo "No packages to remove (none are installed)"
   fi
@@ -89,9 +53,10 @@ remove_web_apps() {
   local web_apps_dir="$HOME/.local/share/applications"
   local web_apps=(
     "WhatsApp.desktop"
-    "HEY Email.desktop"
-    "HEY Calendar.desktop"
+    "HEY.desktop"
     "Basecamp.desktop"
+    "Google Contacts.desktop"
+    "Google Photos.desktop"
   )
 
   echo "Removing Omarchy web apps..."
@@ -117,4 +82,3 @@ fi
 remove_web_apps
 
 echo "Cleanup complete!"
-
