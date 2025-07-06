@@ -25,6 +25,7 @@ echo "Removing unwanted default Omarchy packages..."
 PACKAGES_TO_REMOVE=(
   "alacritty"
   "typora"
+  "dropbox-cli"
   "dropbox"
   "zoom"
 )
@@ -57,6 +58,7 @@ remove_web_apps() {
     "Basecamp.desktop"
     "Google Contacts.desktop"
     "Google Photos.desktop"
+    "Zoom.desktop"
   )
 
   echo "Removing Omarchy web apps..."
