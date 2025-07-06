@@ -23,7 +23,7 @@ install_packages() {
 
     if [ ${#to_install[@]} -ne 0 ]; then
         echo "Installing: ${to_install[*]}"
-        paru -S --noconfirm "${to_install[@]}"
+        yay -S --noconfirm "${to_install[@]}"
     fi
 }
 

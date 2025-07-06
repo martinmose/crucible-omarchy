@@ -2,97 +2,82 @@
 
 # Print the logo
 print_logo() {
-    cat <<"EOF"
+  cat <<"EOF"
     ______                _ __    __     
    / ____/______  _______(_) /_  / /__   
   / /   / ___/ / / / ___/ / __ \/ / _ \  
- / /___/ /  / /_/ / /__/ / /_/ / /  __/  Arch Linux System Crafting Tool
+ / /___/ /  / /_/ / /__/ / /_/ / /  __/  Personal Omarchy Setup
  \____/_/   \__,_/\___/_/_.___/_/\___/   by: martinmose 
 
 EOF
 }
 
-# No command line arguments needed
-
 # Clear screen and show logo
 clear
 print_logo
 
-# Exit on any error
-set -e
+echo "Personal Omarchy Customization Setup"
+echo "===================================="
+echo ""
+echo "This will customize your Omarchy installation with:"
+echo "1. Remove unwanted default packages"
+echo "2. Install additional packages you want"
+echo "3. Setup personal dotfiles"
+echo ""
 
-# Source utility functions
-source utils.sh
+# Ask user what they want to do
+echo "What would you like to do?"
+echo "1) Full setup (remove defaults + install additions + setup dotfiles)"
+echo "2) Remove unwanted default packages only"
+echo "3) Install additional packages only"
+echo "4) Setup dotfiles only"
+echo "5) Exit"
+echo ""
 
-# Source the package list
-if [ ! -f "packages.conf" ]; then
-    echo "Error: packages.conf not found!"
-    exit 1
-fi
+read -p "Enter your choice (1-5): " choice
 
-source packages.conf
+case $choice in
+1)
+  echo ""
+  echo "Running full setup..."
+  echo ""
 
-echo "Starting system setup..."
+  echo "Step 1: Removing unwanted default packages..."
+  ./uninstall-defaults.sh
 
-# Update the system first
-echo "Updating system..."
-sudo pacman -Syu --noconfirm
+  echo ""
+  echo "Step 2: Installing additional packages..."
+  ./install-additions.sh
 
-# Install paru AUR helper if not present
-if ! command -v paru &>/dev/null; then
-    echo "Installing paru AUR helper..."
-    sudo pacman -S --needed git base-devel --noconfirm
-    if [[ ! -d "paru" ]]; then
-        echo "Cloning paru repository..."
-    else
-        echo "paru directory already exists, removing it..."
-        rm -rf paru
-    fi
+  echo ""
+  echo "Step 3: Setting up dotfiles..."
+  ./dotfiles-setup.sh
 
-    git clone https://aur.archlinux.org/paru.git
+  echo ""
+  echo "Full setup complete! You may want to reboot your system."
+  ;;
+2)
+  echo ""
+  echo "Removing unwanted default packages..."
+  ./uninstall-defaults.sh
+  ;;
+3)
+  echo ""
+  echo "Installing additional packages..."
+  ./install-additions.sh
+  ;;
+4)
+  echo ""
+  echo "Setting up dotfiles..."
+  ./dotfiles-setup.sh
+  ;;
+5)
+  echo "Exiting..."
+  exit 0
+  ;;
+*)
+  echo "Invalid choice. Exiting..."
+  exit 1
+  ;;
+esac
 
-    cd paru
-    echo "Building paru..."
-    makepkg -si --noconfirm
-    cd ..
-    rm -rf paru
-else
-    echo "paru is already installed"
-fi
-
-# Install packages by category
-echo "Installing system utilities..."
-install_packages "${SYSTEM_UTILS[@]}"
-
-echo "Installing development tools..."
-install_packages "${DEV_TOOLS[@]}"
-
-echo "Installing system maintenance tools..."
-install_packages "${MAINTENANCE[@]}"
-
-echo "Installing desktop environment..."
-install_packages "${DESKTOP[@]}"
-
-echo "Installing applications..."
-install_packages "${APPLICATIONS[@]}"
-
-echo "Installing media packages..."
-install_packages "${MEDIA[@]}"
-
-echo "Installing fonts..."
-install_packages "${FONTS[@]}"
-
-# Enable services
-echo "Configuring services..."
-for service in "${SERVICES[@]}"; do
-    if ! systemctl is-enabled "$service" &>/dev/null; then
-        echo "Enabling $service..."
-        sudo systemctl enable "$service"
-    else
-        echo "$service is already enabled"
-    fi
-done
-
-# Setup complete
-
-echo "Setup complete! You may want to reboot your system."

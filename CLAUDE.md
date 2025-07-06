@@ -4,19 +4,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an Arch Linux bootstrap tool that automates the setup of a complete Hyprland development environment. It installs and configures packages, window managers, and utilities using paru as the AUR helper.
+This is an Arch Linux bootstrap tool that automates the setup of a complete Hyprland development environment. It installs and configures packages, window managers, and utilities using yay as the AUR helper.
 
 ## Common Commands
 
 ### Main Setup
 ```bash
-# Full system setup (Hyprland + all packages)
+# Interactive setup with options for full or partial customization
 ./run.sh
 ```
 
-### Dotfiles Setup
+### Individual Scripts
 ```bash
-# Clone and setup personal dotfiles after main setup
+# Remove unwanted default Omarchy packages
+./uninstall-defaults.sh
+
+# Install additional packages
+./install-additions.sh
+
+# Clone and setup personal dotfiles
 ./dotfiles-setup.sh
 ```
 
@@ -25,16 +31,27 @@ This is an Arch Linux bootstrap tool that automates the setup of a complete Hypr
 
 ### Core Components
 
-**run.sh**: Main orchestration script that:
-- Installs paru AUR helper
+**run.sh**: Main orchestration script that provides interactive options for:
+- Removing unwanted default Omarchy packages
+- Installing additional packages
+- Setting up personal dotfiles
+- Full customization workflow
+
+**install-additions.sh**: Package installation script that:
+- Installs yay AUR helper
 - Installs packages by category using `packages.conf`
 - Configures Hyprland window manager environment
 - Enables system services
 
+**uninstall-defaults.sh**: Package removal script that:
+- Removes unwanted default Omarchy packages
+- Cleans up applications you don't use
+- Customizable package removal list
+
 **utils.sh**: Shared utility functions:
 - `is_installed()`: Check if pacman package exists
 - `is_group_installed()`: Check if package group exists  
-- `install_packages()`: Install packages via paru if not present
+- `install_packages()`: Install packages via yay if not present
 
 **packages.conf**: Package definitions organized by category:
 - `SYSTEM_UTILS`: Core utilities (git, ripgrep, fzf, btop, etc.)
@@ -52,7 +69,7 @@ This is an Arch Linux bootstrap tool that automates the setup of a complete Hypr
 ## Development Notes
 
 ### Package Manager
-Uses paru instead of yay for AUR package management. Paru is installed automatically if not present.
+Uses yay for AUR package management. Yay is installed automatically if not present.
 
 ### Error Handling
 Scripts use `set -e` for strict error handling and check for command existence before installation.
