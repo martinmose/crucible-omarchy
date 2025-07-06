@@ -39,7 +39,7 @@ if [ $? -eq 0 ]; then
   echo "Repository ready. Running dotfile installation script..."
   cd "$DOTFILES_DIR"
 
-  ./dotfile-script.sh linux
+  ./dotfile-script.sh omarchy
 
   echo ""
   echo "Dotfiles installed successfully!"
