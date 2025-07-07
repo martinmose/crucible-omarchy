@@ -1,11 +1,11 @@
 #!/bin/bash
 
 print_logo() {
-  cat <<"EOF"
+    cat <<"EOF"
     ______                _ __    __     
    / ____/______  _______(_) /_  / /__   
   / /   / ___/ / / / ___/ / __ \/ / _ \  
- / /___/ /  / /_/ / /__/ / /_/ / /  __/  Arch Linux System Crafting Tool
+ / /___/ /  / /_/ / /__/ / /_/ / /  __/  Omarchy Additional Tool
  \____/_/   \__,_/\___/_/_.___/_/\___/   by: martinmose 
 
 EOF
@@ -18,14 +18,14 @@ print_logo
 # Exit on any error
 set -e
 
-source utils.sh
+source "$(dirname "$0")/utils.sh"
 
-if [ ! -f "packages.conf" ]; then
-  echo "Error: packages.conf not found!"
-  exit 1
+if [ ! -f "$(dirname "$0")/../additional-packages.conf" ]; then
+    echo "Error: additional-packages.conf not found!"
+    exit 1
 fi
 
-source packages.conf
+source "$(dirname "$0")/../additional-packages.conf"
 
 echo "Starting system setup..."
 
@@ -53,13 +53,13 @@ install_packages "${FONTS[@]}"
 # secret-tool store --label="test" test test (and set a password in the dialog)
 # secret-tool clear test test
 if is_installed "gnome-keyring"; then
-  echo "Initializing gnome-keyring..."
-  if command -v secret-tool &>/dev/null; then
-    # Create keyring with no password (auto-unlock)
-    echo "test" | secret-tool store --label="test" test test 2>/dev/null || true
-    secret-tool clear test test 2>/dev/null || true
-    echo "Keyring initialized (auto-unlock on login)"
-  fi
+    echo "Initializing gnome-keyring..."
+    if command -v secret-tool &>/dev/null; then
+        # Create keyring with no password (auto-unlock)
+        echo "test" | secret-tool store --label="test" test test 2>/dev/null || true
+        secret-tool clear test test 2>/dev/null || true
+        echo "Keyring initialized (auto-unlock on login)"
+    fi
 fi
 
 echo "Setup complete! You may want to reboot your system."

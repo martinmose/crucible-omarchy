@@ -26,4 +26,3 @@ install_packages() {
         yay -S --noconfirm "${to_install[@]}"
     fi
 }
-

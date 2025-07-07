@@ -1,2 +1,5 @@
 # General
 .DS_Store
+
+# AI
+.claude

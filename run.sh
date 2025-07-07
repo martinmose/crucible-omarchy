@@ -14,6 +14,9 @@ EOF
 clear
 print_logo
 
+# Exit on any error
+set -e
+
 # Check if script is run with sudo privileges
 if [ "$EUID" -ne 0 ]; then
   echo "This script requires sudo privileges for package management."
@@ -47,15 +50,24 @@ case $choice in
   echo ""
 
   echo "Step 1: Removing unwanted default packages..."
-  ./uninstall-defaults.sh
+  if ! ./scripts/uninstall-defaults.sh; then
+    echo "ERROR: Failed to remove unwanted packages!"
+    exit 1
+  fi
 
   echo ""
   echo "Step 2: Installing additional packages..."
-  ./install-additions.sh
+  if ! ./scripts/install-additions.sh; then
+    echo "ERROR: Failed to install additional packages!"
+    exit 1
+  fi
 
   echo ""
   echo "Step 3: Setting up dotfiles..."
-  ./dotfiles-setup.sh
+  if ! ./scripts/dotfiles-setup.sh; then
+    echo "ERROR: Failed to setup dotfiles!"
+    exit 1
+  fi
 
   echo ""
   echo "Full setup complete! You may want to reboot your system."
@@ -63,17 +75,17 @@ case $choice in
 2)
   echo ""
   echo "Removing unwanted default packages..."
-  ./uninstall-defaults.sh
+  ./scripts/uninstall-defaults.sh
   ;;
 3)
   echo ""
   echo "Installing additional packages..."
-  ./install-additions.sh
+  ./scripts/install-additions.sh
   ;;
 4)
   echo ""
   echo "Setting up dotfiles..."
-  ./dotfiles-setup.sh
+  ./scripts/dotfiles-setup.sh
   ;;
 5)
   echo "Exiting..."

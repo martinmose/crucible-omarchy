@@ -1,7 +1,7 @@
 #!/bin/bash
 
 print_logo() {
-  cat <<"EOF"
+    cat <<"EOF"
     ______                _ __    __     
    / ____/______  _______(_) /_  / /__   
   / /   / ___/ / / / ___/ / __ \/ / _ \  
@@ -18,7 +18,7 @@ print_logo
 set -e
 
 ORIGINAL_DIR=$(pwd)
-REPO_URL="https://github.com/martinmose/.dotfiles"
+REPO_USER="martinmose"
 REPO_NAME=".dotfiles"
 DOTFILES_DIR="$HOME/$REPO_NAME"
 
@@ -26,27 +26,27 @@ echo "Setting up personal dotfiles..."
 
 # Check if the repository already exists
 if [ -d "$DOTFILES_DIR" ]; then
-  echo "Repository '$REPO_NAME' already exists. Pulling latest changes..."
-  cd "$DOTFILES_DIR"
-  git pull origin main
+    echo "Repository '$REPO_NAME' already exists. Pulling latest changes..."
+    cd "$DOTFILES_DIR"
+    git pull origin main
 else
-  echo "Cloning dotfiles repository..."
-  gh repo clone martinmose/.dotfiles "$DOTFILES_DIR"
+    echo "Cloning dotfiles repository..."
+    gh repo clone "$REPO_USER/$REPO_NAME" "$DOTFILES_DIR"
 fi
 
 # Check if the clone was successful
 if [ $? -eq 0 ]; then
-  echo "Repository ready. Running dotfile installation script..."
-  cd "$DOTFILES_DIR"
+    echo "Repository ready. Running dotfile installation script..."
+    cd "$DOTFILES_DIR"
 
-  ./dotfile-script.sh omarchy
+    ./dotfile-script.sh omarchy
 
-  echo ""
-  echo "Dotfiles installed successfully!"
-  echo ""
+    echo ""
+    echo "Dotfiles installed successfully!"
+    echo ""
 
-  cd "$ORIGINAL_DIR"
+    cd "$ORIGINAL_DIR"
 else
-  echo "Failed to setup dotfiles repository."
-  exit 1
+    echo "Failed to setup dotfiles repository."
+    exit 1
 fi
