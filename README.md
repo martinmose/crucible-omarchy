@@ -106,6 +106,31 @@ See: https://www.reddit.com/r/hyprland/comments/1jfo3rj/text_rendering_blurry_af
 ### 1Password Developer Mode
 The current version doesn't support the rich approval prompt which is enabled by default. If you experience issues with 1Password SSH agent authentication, try disabling the rich approval prompt in 1Password settings under **Settings** → **Developer** → **Rich approval prompt**.
 
+### System Keyring Configuration
+
+#### Removing System Keyring Password
+
+If you want to remove the password protection from your system keyring (making it unencrypted), follow these steps:
+
+⚠️ **Security Warning**: This makes your keyring unencrypted. Only do this if you don't store sensitive information like passwords in applications.
+
+1. 📦 **Install Seahorse** (keyring management GUI):
+   ```bash
+   sudo pacman -S seahorse
+   ```
+
+2. 🔐 **Launch Seahorse**:
+   ```bash
+   seahorse &
+   ```
+
+3. 🧹 **Remove the keyring password**:
+   - Look for the keyring called "Login" or "Default"
+   - Right-click it and choose "Change Password"
+   - Enter the current password (likely your login password)
+   - Leave the new password fields empty
+   - Confirm — it will warn you it's insecure
+
 ### Brave Browser Setup
 After installation, remember to set up Brave sync to synchronize your browser data across devices. Go to **Settings** → **Sync** and enable sync for:
 - Extensions
