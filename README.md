@@ -2,6 +2,10 @@
 
 My personal customization and automation tool for customizes Omarchy with additional packages and my personal dotfiles configuration. This extends the base [Omarchy](https://manuals.omamix.org/2/the-omarchy-manual) setup with my preferred tools and configurations.
 
+## Inspiration
+
+This project is inspired by [Crucible](https://github.com/typecraft-dev/crucible) by [typecraft](https://x.com/typecraft_dev)
+
 ## Prerequisites
 
 - Base Omarchy installation (see installation guide below)
