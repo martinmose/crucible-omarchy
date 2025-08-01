@@ -17,10 +17,10 @@ print_logo
 # Exit on any error
 set -e
 
-# Check if script is run with sudo privileges
-if [ "$EUID" -ne 0 ]; then
-  echo "This script requires sudo privileges for package management."
-  echo "Please run: sudo ./run.sh"
+# Ensure script is not run as root
+if [ "$EUID" -eq 0 ]; then
+  echo "Error: This script should not be run as root or with sudo."
+  echo "Please run it as a regular user: ./run.sh"
   exit 1
 fi
 
