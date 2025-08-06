@@ -44,9 +44,6 @@ install_packages "${DEV_TOOLS[@]}"
 echo "Installing applications..."
 install_packages "${APPLICATIONS[@]}"
 
-echo "Installing fonts..."
-install_packages "${FONTS[@]}"
-
 # Install web apps using web2app
 if [ ${#WEBAPPS[@]} -gt 0 ]; then
     echo "Installing web apps..."
