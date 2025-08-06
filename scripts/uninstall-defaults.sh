@@ -70,7 +70,7 @@ for app in "${WEBAPPS[@]}"; do
     
     if [ -f "$desktop_file" ]; then
         echo "Removing web app: $app_name"
-        bash -c "source ~/.bashrc; web2app-remove '$app_name'" 2>/dev/null || echo "Warning: Some files for $app_name were already removed"
+        ~/.local/share/omarchy/bin/omarchy-webapp-remove "$app_name" || echo "Warning: Some files for $app_name were already removed"
     else
         echo "Web app $app_name not found, skipping"
     fi
