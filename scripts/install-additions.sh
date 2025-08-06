@@ -78,4 +78,20 @@ if is_installed "gnome-keyring"; then
     fi
 fi
 
+# Add Nord background to Gruvbox theme
+nord_bg="/home/martinmose/.local/share/omarchy/themes/nord/backgrounds/1-nord.png"
+gruvbox_bg_dir="/home/martinmose/.local/share/omarchy/themes/gruvbox/backgrounds"
+gruvbox_nord_bg="$gruvbox_bg_dir/1-nord.png"
+
+if [ -f "$nord_bg" ] && [ ! -f "$gruvbox_nord_bg" ]; then
+    echo "Adding Nord background to Gruvbox theme..."
+    cp "$nord_bg" "$gruvbox_bg_dir/" || echo "Warning: Failed to copy Nord background"
+else
+    echo "Nord background already exists in Gruvbox theme or source not found"
+fi
+
+# Set Omarchy theme
+echo "Setting Gruvbox theme..."
+~/.local/share/omarchy/bin/omarchy-theme-set Gruvbox || echo "Warning: Failed to set theme"
+
 echo "Setup complete! You may want to reboot your system."
