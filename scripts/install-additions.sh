@@ -47,6 +47,22 @@ install_packages "${APPLICATIONS[@]}"
 echo "Installing fonts..."
 install_packages "${FONTS[@]}"
 
+# Install web apps using web2app
+if [ ${#WEBAPPS[@]} -gt 0 ]; then
+    echo "Installing web apps..."
+    for webapp in "${WEBAPPS[@]}"; do
+        # Parse pipe-separated format: AppName|AppURL|IconURL
+        IFS='|' read -r app_name app_url icon_url <<< "$webapp"
+        
+        if [ -n "$app_name" ] && [ -n "$app_url" ] && [ -n "$icon_url" ]; then
+            echo "Installing web app: $app_name"
+            ~/.local/share/omarchy/bin/omarchy-webapp-install "$app_name" "$app_url" "$icon_url" || echo "Warning: Failed to install $app_name"
+        else
+            echo "Warning: Invalid webapp format: $webapp"
+        fi
+    done
+fi
+
 # Initialize gnome-keyring if it was installed
 # This creates a default keyring with no password (auto-unlock on login)
 # If you want password protection, you can manually reinitialize later with:
