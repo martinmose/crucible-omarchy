@@ -49,8 +49,8 @@ if [ ${#WEBAPPS[@]} -gt 0 ]; then
     echo "Installing web apps..."
     for webapp in "${WEBAPPS[@]}"; do
         # Parse pipe-separated format: AppName|AppURL|IconURL
-        IFS='|' read -r app_name app_url icon_url <<< "$webapp"
-        
+        IFS='|' read -r app_name app_url icon_url <<<"$webapp"
+
         if [ -n "$app_name" ] && [ -n "$app_url" ] && [ -n "$icon_url" ]; then
             echo "Installing web app: $app_name"
             ~/.local/share/omarchy/bin/omarchy-webapp-install "$app_name" "$app_url" "$icon_url" || echo "Warning: Failed to install $app_name"
@@ -90,5 +90,9 @@ fi
 # Set Omarchy theme
 echo "Setting Gruvbox theme..."
 ~/.local/share/omarchy/bin/omarchy-theme-set Gruvbox || echo "Warning: Failed to set theme"
+
+# Set Omarchy font
+echo "Setting FiraCode font..."
+~/.local/share/omarchy/bin/omarchy-font-set "FiraCode Nerd Font" || echo "Warning: Failed to set font"
 
 echo "Setup complete! You may want to reboot your system."
