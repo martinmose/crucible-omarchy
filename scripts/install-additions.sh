@@ -44,6 +44,15 @@ install_packages "${DEV_TOOLS[@]}"
 echo "Installing applications..."
 install_packages "${APPLICATIONS[@]}"
 
+# Enable and start services
+if [ ${#SERVICES[@]} -gt 0 ]; then
+    echo "Enabling and starting services..."
+    for service in "${SERVICES[@]}"; do
+        echo "Enabling service: $service"
+        sudo systemctl enable --now "$service" || echo "Warning: Failed to enable $service"
+    done
+fi
+
 # Install web apps using web2app
 if [ ${#WEBAPPS[@]} -gt 0 ]; then
     echo "Installing web apps..."
