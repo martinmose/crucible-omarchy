@@ -56,26 +56,36 @@ This interactive script will let you choose what to do:
 
 ## Post-Setup Configuration
 
-### Enable 1Password SSH Agent
+### 1Password Setup
 
-After installing 1Password, enable the SSH Agent for seamless Git authentication:
+After installation, complete the 1Password configuration:
 
-1. Open 1Password
-2. Go to **Settings** → **Developer**
-3. Enable **Use the SSH agent**
-4. Optionally enable **Display key names when authorizing connections**
+1. **Login to 1Password**: Sign in with your account credentials
+2. **Enable SSH Agent**: 
+   - Go to **Settings** → **Developer**
+   - Enable **Use the SSH agent**
+   - Optionally enable **Display key names when authorizing connections**
+3. **Enable CLI Access**: 
+   - Go to **Settings** → **Developer**
+   - Enable **Connect with 1Password CLI**
 
-This allows you to store SSH keys in 1Password and use them automatically for Git operations without manually managing SSH keys.
+This allows you to store SSH keys in 1Password and use them automatically for Git operations, plus enables CLI integration for password management.
+
+### Brave Browser Setup
+
+After installation, set up Brave sync to synchronize your browser data:
+
+1. Open Brave Browser
+2. Go to **Settings** → **Sync**
+3. Set up sync and enable synchronization for:
+   - Extensions
+   - History
+   - Settings
+   - Open tabs
+   - Saved tab groups
 
 ## Known Issues
 
 ### 1Password Developer Mode
 The current version doesn't support the rich approval prompt which is enabled by default. If you experience issues with 1Password SSH agent authentication, try disabling the rich approval prompt in 1Password settings under **Settings** → **Developer** → **Rich approval prompt**.
 
-### Brave Browser Setup
-After installation, remember to set up Brave sync to synchronize your browser data across devices. Go to **Settings** → **Sync** and enable sync for:
-- Extensions
-- History
-- Settings
-- Open tabs
-- Saved tab groups
