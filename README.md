@@ -20,9 +20,23 @@ Once you have Omarchy running, this tool adds my personal customizations and add
 
 ### Cloning Repository
 
-1. Clone this repository:
+1. Install GitHub CLI:
+```bash
+yay -S github-cli
+```
+
+2. Authenticate with GitHub:
+```bash
+gh auth login
+```
+
+3. Clone this repository:
 ```bash
 gh repo clone martinmose/crucible-omarchy
+```
+
+3. Navigate to the directory:
+```bash
 cd crucible-omarchy
 ```
 
@@ -31,7 +45,7 @@ cd crucible-omarchy
 1. Run the main setup script:
 
 ```bash
-sudo ./run.sh
+./run.sh
 ```
 
 This interactive script will let you choose what to do:
