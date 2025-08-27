@@ -84,6 +84,30 @@ After installation, set up Brave sync to synchronize your browser data:
    - Open tabs
    - Saved tab groups
 
+## Customization
+
+### Adding Web Apps
+
+You can add custom web applications that will be installed as desktop applications. Web apps are defined in the `additional-packages.conf` file in the `WEBAPPS` array.
+
+**Format:**
+```bash
+WEBAPPS=(
+  "App Name|URL|Icon URL"
+)
+```
+
+**Example:**
+```bash
+WEBAPPS=(
+  "Proton Mail|https://mail.proton.me|https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/proton-mail.png"
+  ...
+)
+```
+
+**Finding Icons:**
+Icons can be found at [Dashboard Icons](https://dashboardicons.com/). Use the CDN URL format: `https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/[icon-name].png`
+
 ## Known Issues
 
 ### 1Password Developer Mode
