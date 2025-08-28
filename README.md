@@ -45,6 +45,12 @@ cd crucible-omarchy
 git remote set-url origin git@github.com:martinmose/crucible-omarchy.git
 ```
 
+6. Also switch the dotfiles repository to SSH:
+```bash
+cd ~/.dotfiles
+git remote set-url origin git@github.com:martinmose/.dotfiles.git
+```
+
 ### Running the Setup
 
 1. Run the main setup script:
