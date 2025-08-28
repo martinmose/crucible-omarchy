@@ -95,6 +95,14 @@ After installation, set up Brave sync to synchronize your browser data:
    - Open tabs
    - Saved tab groups
 
+### Obsidian Setup
+
+After installation, remember to login to Obsidian to sync your notes:
+
+1. Open Obsidian
+2. Sign in with your Obsidian account
+3. Enable sync to access your existing vaults and notes
+
 ## Customization
 
 ### Adding Web Apps
