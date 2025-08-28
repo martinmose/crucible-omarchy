@@ -35,9 +35,14 @@ gh auth login
 gh repo clone martinmose/crucible-omarchy
 ```
 
-3. Navigate to the directory:
+4. Navigate to the directory:
 ```bash
 cd crucible-omarchy
+```
+
+5. Once everything is set up, switch to SSH for git operations:
+```bash
+git remote set-url origin git@github.com:martinmose/crucible-omarchy.git
 ```
 
 ### Running the Setup
