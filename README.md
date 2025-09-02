@@ -132,3 +132,7 @@ Icons can be found at [Dashboard Icons](https://dashboardicons.com/). Use the CD
 ### 1Password Developer Mode
 The current version doesn't support the rich approval prompt which is enabled by default. If you experience issues with 1Password SSH agent authentication, try disabling the rich approval prompt in 1Password settings under **Settings** → **Developer** → **Rich approval prompt**.
 
+## TODO
+
+- Check if wl-clipboard is already installed by default in Omarchy before adding to packages
+
