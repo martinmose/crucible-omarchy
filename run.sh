@@ -49,21 +49,30 @@ case $choice in
   echo "Running full setup..."
   echo ""
 
-  echo "Step 1: Removing unwanted default packages..."
+  echo "Step 1: Creating ~/dev directory..."
+  if [ ! -d "$HOME/dev" ]; then
+    mkdir -p "$HOME/dev"
+    echo "Created ~/dev directory"
+  else
+    echo "~/dev directory already exists"
+  fi
+
+  echo ""
+  echo "Step 2: Removing unwanted default packages..."
   if ! ./scripts/uninstall-defaults.sh; then
     echo "ERROR: Failed to remove unwanted packages!"
     exit 1
   fi
 
   echo ""
-  echo "Step 2: Installing additional packages..."
+  echo "Step 3: Installing additional packages..."
   if ! ./scripts/install-additions.sh; then
     echo "ERROR: Failed to install additional packages!"
     exit 1
   fi
 
   echo ""
-  echo "Step 3: Setting up dotfiles..."
+  echo "Step 4: Setting up dotfiles..."
   if ! ./scripts/dotfiles-setup.sh; then
     echo "ERROR: Failed to setup dotfiles!"
     exit 1
