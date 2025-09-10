@@ -39,10 +39,35 @@ echo "Installing ai tools..."
 install_packages "${AI_TOOLS[@]}"
 
 echo "Installing development tools..."
-install_packages "${DEV_TOOLS[@]}"
+echo "  - Language tools..."
+install_packages "${DEV_TOOLS_LANGUAGES[@]}"
+echo "  - Android tools..."
+install_packages "${DEV_TOOLS_ANDROID[@]}"
+
+
+echo "  - Neovim tools..."
+install_packages "${DEV_TOOLS_NVIM[@]}"
 
 echo "Installing applications..."
 install_packages "${APPLICATIONS[@]}"
+
+# Install NPM packages globally
+if [ ${#NPM_PACKAGES[@]} -gt 0 ] && command -v npm &>/dev/null; then
+    echo "Installing NPM global packages..."
+    for package in "${NPM_PACKAGES[@]}"; do
+        echo "Installing npm package: $package"
+        sudo npm install -g "$package" || echo "Warning: Failed to install npm package $package"
+    done
+fi
+
+# Install Cargo packages
+if [ ${#CARGO_PACKAGES[@]} -gt 0 ] && command -v cargo &>/dev/null; then
+    echo "Installing Cargo packages..."
+    for package in "${CARGO_PACKAGES[@]}"; do
+        echo "Installing cargo package: $package"
+        cargo install "$package" || echo "Warning: Failed to install cargo package $package"
+    done
+fi
 
 # Enable and start services
 if [ ${#SERVICES[@]} -gt 0 ]; then
