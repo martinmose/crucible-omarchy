@@ -41,6 +41,13 @@ install_packages "${AI_TOOLS[@]}"
 echo "Installing development tools..."
 echo "  - Language tools..."
 install_packages "${DEV_TOOLS_LANGUAGES[@]}"
+
+# Setup Rust after installing rustup
+if is_installed "rustup" && ! rustup show &>/dev/null; then
+    echo "Setting up Rust toolchain..."
+    rustup default stable
+fi
+
 echo "  - Android tools..."
 install_packages "${DEV_TOOLS_ANDROID[@]}"
 
