@@ -27,6 +27,9 @@ fi
 
 source "$(dirname "$0")/../additional-packages.conf"
 
+# Omarchy bin directory
+OMARCHY_BIN="$HOME/.local/share/omarchy/bin"
+
 echo "Starting system setup..."
 
 echo "Updating system..."
@@ -94,7 +97,7 @@ if [ ${#WEBAPPS[@]} -gt 0 ]; then
 
         if [ -n "$app_name" ] && [ -n "$app_url" ] && [ -n "$icon_url" ]; then
             echo "Installing web app: $app_name"
-            ~/.local/share/omarchy/bin/omarchy-webapp-install "$app_name" "$app_url" "$icon_url" || echo "Warning: Failed to install $app_name"
+            "$OMARCHY_BIN/omarchy-webapp-install" "$app_name" "$app_url" "$icon_url" || echo "Warning: Failed to install $app_name"
         else
             echo "Warning: Invalid webapp format: $webapp"
         fi
@@ -130,10 +133,14 @@ fi
 
 # Set Omarchy theme
 echo "Setting Gruvbox theme..."
-~/.local/share/omarchy/bin/omarchy-theme-set Gruvbox || echo "Warning: Failed to set theme"
+"$OMARCHY_BIN/omarchy-theme-set" Gruvbox || echo "Warning: Failed to set theme"
 
 # Set Omarchy font
 echo "Setting FiraCode font..."
-~/.local/share/omarchy/bin/omarchy-font-set "FiraCode Nerd Font" || echo "Warning: Failed to set font"
+"$OMARCHY_BIN/omarchy-font-set" "FiraCode Nerd Font" || echo "Warning: Failed to set font"
+
+# Install Ghostty terminal as the last step
+echo "Installing Ghostty terminal..."
+"$OMARCHY_BIN/omarchy-install-terminal" ghostty || echo "Warning: Failed to install Ghostty terminal"
 
 echo "Setup complete! You may want to reboot your system."
