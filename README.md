@@ -103,6 +103,10 @@ After installation, remember to login to Obsidian to sync your notes:
 2. Sign in with your Obsidian account
 3. Enable sync to access your existing vaults and notes
 
+### Danish Character Setup
+
+For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](keyd-setup.md) for configuration details.
+
 ## Customization
 
 ### Adding Web Apps

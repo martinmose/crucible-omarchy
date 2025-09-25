@@ -144,3 +144,6 @@ echo "Installing Ghostty terminal..."
 "$OMARCHY_BIN/omarchy-install-terminal" ghostty || echo "Warning: Failed to install Ghostty terminal"
 
 echo "Setup complete! You may want to reboot your system."
+echo ""
+echo "Additional setup available:"
+echo "  - Run './scripts/setup-keyd.sh' to configure Danish character shortcuts"
