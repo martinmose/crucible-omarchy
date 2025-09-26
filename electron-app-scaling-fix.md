@@ -22,6 +22,13 @@ Copy the system desktop entry content and modify the `Exec` line to include:
 --force-device-scale-factor=1
 ```
 
+## Fixed Applications
+The following applications have been successfully fixed:
+- Twitch
+- Slack
+- Discord
+- Spotify
+
 ## Examples
 
 ### Slack
@@ -36,8 +43,17 @@ File: `~/.local/share/applications/spotify.desktop`
 Exec=spotify --force-device-scale-factor=1 --uri=%u
 ```
 
+### Twitch (Shell Script Wrapper)
+File: `~/.local/share/applications/twitch.desktop`
+```ini
+Exec=sh -c "cd /opt/Twitch && ./electron . --force-device-scale-factor=1"
+```
+**Note**: Twitch uses a shell script wrapper, so the flag must be passed directly to the Electron process.
+
 ## Notes
 - The local desktop entry takes precedence over the system one
 - Restart the application after creating the override
 - Adjust the scale factor value if needed (0.8, 1.2, etc.)
 - This affects app launcher usage, not terminal aliases
+- For apps using shell script wrappers, pass the flag directly to the Electron process
+- Check if the app executable is a script by running `file $(which app-name)`
