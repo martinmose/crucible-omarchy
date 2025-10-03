@@ -40,7 +40,12 @@ remove_packages() {
     local to_remove=()
 
     for pkg in "${packages[@]}"; do
-        if is_installed "$pkg"; then
+        # Special handling for rust package - check if it's explicitly installed, not just provided
+        if [ "$pkg" = "rust" ]; then
+            if pacman -Qq rust 2>/dev/null | grep -q "^rust$"; then
+                to_remove+=("$pkg")
+            fi
+        elif is_installed "$pkg"; then
             to_remove+=("$pkg")
         fi
     done
