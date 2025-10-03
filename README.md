@@ -131,6 +131,17 @@ Icons can be found at [Dashboard Icons](https://dashboardicons.com/). Use the CD
 ### 1Password Developer Mode
 The current version doesn't support the rich approval prompt which is enabled by default. If you experience issues with 1Password SSH agent authentication, try disabling the rich approval prompt in 1Password settings under **Settings** → **Developer** → **Rich approval prompt**.
 
+### OBS with Nvidia Blackwell GPUs
+If you experience issues with OBS on Nvidia Blackwell GPUs, this can likely be fixed by installing the open-source Nvidia drivers:
+
+```bash
+sudo pacman -S nvidia-open linux linux-headers nvidia-utils nvtop
+```
+
+**Important:** Use HDMI instead of DisplayPort for better compatibility.
+
+If issues persist, check the Omarchy Discord for additional troubleshooting steps.
+
 ## TODO
 
 - Check if wl-clipboard is already installed by default in Omarchy before adding to packages
