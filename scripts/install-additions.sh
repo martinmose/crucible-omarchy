@@ -140,8 +140,16 @@ echo "Setting FiraCode font..."
 "$OMARCHY_BIN/omarchy-font-set" "FiraCode Nerd Font" || echo "Warning: Failed to set font"
 
 # Install Ghostty terminal as the last step
-echo "Installing Ghostty terminal..."
-"$OMARCHY_BIN/omarchy-install-terminal" ghostty || echo "Warning: Failed to install Ghostty terminal"
+echo "Checking Ghostty terminal..."
+current_terminal=$(grep "export TERMINAL=" ~/.config/uwsm/default 2>/dev/null | cut -d'=' -f2)
+if [ "$current_terminal" != "ghostty" ]; then
+    echo "Installing and setting Ghostty as default terminal..."
+    "$OMARCHY_BIN/omarchy-install-terminal" ghostty || echo "Warning: Failed to install Ghostty terminal"
+else
+    echo "Ghostty is already the default terminal, skipping installation prompt."
+    # Just ensure the package is installed without changing settings
+    "$OMARCHY_BIN/omarchy-pkg-add" ghostty 2>/dev/null || true
+fi
 
 echo "Setup complete! You may want to reboot your system."
 echo ""
