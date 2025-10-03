@@ -98,6 +98,17 @@ After installation, remember to login to Obsidian to sync your notes:
 2. Sign in with your Obsidian account
 3. Enable sync to access your existing vaults and notes
 
+### Tailscale Setup
+
+After installation, configure Tailscale for secure remote access:
+
+1. Start Tailscale:
+```bash
+sudo tailscale up
+```
+2. Follow the authentication link in your terminal
+3. Sign in with your Tailscale account to connect this device to your network
+
 ### Danish Character Setup
 
 For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](keyd-setup.md) for configuration details.
