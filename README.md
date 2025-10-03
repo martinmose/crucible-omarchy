@@ -102,9 +102,13 @@ After installation, remember to login to Obsidian to sync your notes:
 
 After installation, configure Tailscale for secure remote access:
 
-1. Start Tailscale:
+1. Start and authenticate Tailscale with SSH access in one command:
 ```bash
-sudo tailscale up
+sudo tailscale up --ssh && sudo tailscale status
+```
+   Or if you just want to enable SSH:
+```bash
+sudo tailscale up --ssh
 ```
 2. Follow the authentication link in your terminal
 3. Sign in with your Tailscale account to connect this device to your network
