@@ -20,32 +20,27 @@ Once you have Omarchy running, this tool adds my personal customizations and add
 
 ### Cloning Repository
 
-1. Install GitHub CLI:
-```bash
-yay -S github-cli
-```
-
-2. Authenticate with GitHub:
+1. Authenticate with GitHub:
 ```bash
 gh auth login
 ```
 
-3. Clone this repository:
+2. Clone this repository:
 ```bash
 gh repo clone martinmose/crucible-omarchy
 ```
 
-4. Navigate to the directory:
+3. Navigate to the directory:
 ```bash
 cd crucible-omarchy
 ```
 
-5. Once everything is set up, switch to SSH for git operations:
+4. Once everything is set up, switch to SSH for git operations:
 ```bash
 git remote set-url origin git@github.com:martinmose/crucible-omarchy.git
 ```
 
-6. Also switch the dotfiles repository to SSH:
+5. Also switch the dotfiles repository to SSH:
 ```bash
 cd ~/.dotfiles
 git remote set-url origin git@github.com:martinmose/.dotfiles.git
