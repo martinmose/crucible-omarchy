@@ -38,6 +38,14 @@ sudo pacman -Syu --noconfirm
 echo "Installing system utilities..."
 install_packages "${SYSTEM_UTILS[@]}"
 
+# Change default shell to ZSH if it's installed and not already default
+if is_installed "zsh" && [ "$SHELL" != "$(which zsh)" ]; then
+    echo "Changing default shell to ZSH..."
+    chsh -s $(which zsh) || echo "Warning: Failed to change shell to ZSH. You may need to run: chsh -s \$(which zsh)"
+else
+    echo "ZSH is already the default shell or not installed"
+fi
+
 echo "Installing ai tools..."
 install_packages "${AI_TOOLS[@]}"
 
