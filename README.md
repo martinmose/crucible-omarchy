@@ -62,6 +62,10 @@ This interactive script will let you choose what to do:
 
 ## Post-Setup Configuration
 
+#### Secure Boot + Windows Dual-Boot
+
+If you use Omarchy with Windows and want Secure Boot enabled for both, see `docs/secure-boot-omarchy-dualboot.md`.
+
 ### 1Password Setup
 
 After installation, complete the 1Password configuration:
@@ -115,7 +119,7 @@ sudo tailscale up --ssh
 
 ### Danish Character Setup
 
-For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](keyd-setup.md) for configuration details.
+For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](docs/keyd-setup.md) for configuration details.
 
 ## Customization
 
@@ -160,4 +164,3 @@ If issues persist, check the Omarchy Discord for additional troubleshooting step
 ## TODO
 
 - Check if wl-clipboard is already installed by default in Omarchy before adding to packages
-
