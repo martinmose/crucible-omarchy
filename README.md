@@ -121,6 +121,10 @@ sudo tailscale up --ssh
 
 For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](docs/keyd-setup.md) for configuration details.
 
+### Voxtype (Voice-to-Text)
+
+If you opted into voice tools during setup, voxtype should already be running. For manual setup or troubleshooting, see [voxtype-setup.md](docs/voxtype-setup.md).
+
 ## Customization
 
 ### Adding Web Apps

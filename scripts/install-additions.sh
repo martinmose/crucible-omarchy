@@ -69,6 +69,24 @@ install_packages "${DEV_TOOLS_NVIM[@]}"
 echo "Installing applications..."
 install_packages "${APPLICATIONS[@]}"
 
+# Optional: Voice tools (speech-to-text)
+if [ ${#VOICE_TOOLS[@]} -gt 0 ]; then
+    echo ""
+    read -p "Would you like to install voice tools (speech-to-text)? [y/N]: " install_voice
+    if [[ "$install_voice" =~ ^[Yy]$ ]]; then
+        echo "Installing voice tools..."
+        install_packages "${VOICE_TOOLS[@]}"
+
+        # Run voxtype model download if voxtype was installed
+        if is_installed "voxtype-bin"; then
+            echo "Downloading voxtype speech model..."
+            voxtype setup --download || echo "Warning: Failed to download voxtype model"
+        fi
+    else
+        echo "Skipping voice tools."
+    fi
+fi
+
 # Install NPM packages globally
 if [ ${#NPM_PACKAGES[@]} -gt 0 ] && command -v npm &>/dev/null; then
     echo "Installing NPM global packages..."
@@ -93,6 +111,17 @@ if [ ${#SERVICES[@]} -gt 0 ]; then
     for service in "${SERVICES[@]}"; do
         echo "Enabling service: $service"
         sudo systemctl enable --now "$service" || echo "Warning: Failed to enable $service"
+    done
+fi
+
+# Enable and start user services
+if [ ${#USER_SERVICES[@]} -gt 0 ]; then
+    echo "Enabling and starting user services..."
+    for service in "${USER_SERVICES[@]}"; do
+        if is_installed "${service}" || is_installed "${service}-bin"; then
+            echo "Enabling user service: $service"
+            systemctl --user enable --now "$service" || echo "Warning: Failed to enable user service $service"
+        fi
     done
 fi
 
