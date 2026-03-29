@@ -87,12 +87,12 @@ if [ ${#VOICE_TOOLS[@]} -gt 0 ]; then
     fi
 fi
 
-# Install NPM packages globally
-if [ ${#NPM_PACKAGES[@]} -gt 0 ] && command -v npm &>/dev/null; then
-    echo "Installing NPM global packages..."
-    for package in "${NPM_PACKAGES[@]}"; do
-        echo "Installing npm package: $package"
-        sudo npm install -g "$package" || echo "Warning: Failed to install npm package $package"
+# Install pnpm global packages
+if [ ${#PNPM_PACKAGES[@]} -gt 0 ] && command -v pnpm &>/dev/null; then
+    echo "Installing pnpm global packages..."
+    for package in "${PNPM_PACKAGES[@]}"; do
+        echo "Installing pnpm package: $package"
+        pnpm add -g "$package" || echo "Warning: Failed to install pnpm package $package"
     done
 fi
 
