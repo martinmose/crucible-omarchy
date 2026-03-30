@@ -59,19 +59,30 @@ if is_installed "rustup" && ! rustup show &>/dev/null; then
     rustup default stable
 fi
 
-echo "  - Android tools..."
-install_packages "${DEV_TOOLS_ANDROID[@]}"
-
-
 echo "  - Neovim tools..."
 install_packages "${DEV_TOOLS_NVIM[@]}"
 
 echo "Installing applications..."
 install_packages "${APPLICATIONS[@]}"
 
+# Optional installs
+echo ""
+echo "Optional packages:"
+echo "-------------------"
+
+# Optional: Android development tools
+if [ ${#DEV_TOOLS_ANDROID[@]} -gt 0 ]; then
+    read -p "Would you like to install Android development tools (Android Studio, ktlint)? [y/N]: " install_android
+    if [[ "$install_android" =~ ^[Yy]$ ]]; then
+        echo "Installing Android development tools..."
+        install_packages "${DEV_TOOLS_ANDROID[@]}"
+    else
+        echo "Skipping Android development tools."
+    fi
+fi
+
 # Optional: Voice tools (speech-to-text)
 if [ ${#VOICE_TOOLS[@]} -gt 0 ]; then
-    echo ""
     read -p "Would you like to install voice tools (speech-to-text)? [y/N]: " install_voice
     if [[ "$install_voice" =~ ^[Yy]$ ]]; then
         echo "Installing voice tools..."
