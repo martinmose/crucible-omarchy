@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 print_logo() {
     cat <<"EOF"
@@ -14,39 +15,40 @@ EOF
 clear
 print_logo
 
-# Exit on any error
-set -e
-
-ORIGINAL_DIR=$(pwd)
 REPO_USER="martinmose"
 REPO_NAME=".dotfiles"
 DOTFILES_DIR="$HOME/$REPO_NAME"
 
 echo "Setting up personal dotfiles..."
 
-# Check if the repository already exists
-if [ -d "$DOTFILES_DIR" ]; then
+# Ensure chezmoi is installed
+if ! command -v chezmoi >/dev/null 2>&1; then
+    echo "Installing chezmoi..."
+    yay -S --noconfirm chezmoi
+fi
+
+# Clone or update the dotfiles repository
+if [[ -d "$DOTFILES_DIR" ]]; then
     echo "Repository '$REPO_NAME' already exists. Pulling latest changes..."
-    cd "$DOTFILES_DIR"
-    git pull origin main
+    git -C "$DOTFILES_DIR" pull origin main
 else
     echo "Cloning dotfiles repository..."
     gh repo clone "$REPO_USER/$REPO_NAME" "$DOTFILES_DIR"
 fi
 
-# Check if the clone was successful
-if [ $? -eq 0 ]; then
-    echo "Repository ready. Running dotfile installation script..."
-    cd "$DOTFILES_DIR"
-
-    ./dotfile-script.sh omarchy
-
-    echo ""
-    echo "Dotfiles installed successfully!"
-    echo ""
-
-    cd "$ORIGINAL_DIR"
-else
-    echo "Failed to setup dotfiles repository."
-    exit 1
+# Create chezmoi config pointing to the repo
+mkdir -p "$HOME/.config/chezmoi"
+if [[ ! -f "$HOME/.config/chezmoi/chezmoi.toml" ]]; then
+    cat > "$HOME/.config/chezmoi/chezmoi.toml" << 'EOF'
+sourceDir = "~/.dotfiles"
+EOF
+    echo "Created chezmoi config at ~/.config/chezmoi/chezmoi.toml"
 fi
+
+# Apply dotfiles
+echo "Applying dotfiles with chezmoi..."
+chezmoi apply -v
+
+echo ""
+echo "Dotfiles installed successfully!"
+echo ""

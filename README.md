@@ -58,7 +58,7 @@ This interactive script will let you choose what to do:
 - **Full setup**: Remove unwanted defaults + install additions + setup dotfiles
 - **Remove defaults only**: Clean up Omarchy packages you don't want
 - **Install additions only**: Add your preferred packages
-- **Setup dotfiles only**: Configure personal dotfiles
+- **Setup dotfiles only**: Configure personal dotfiles (managed with [chezmoi](https://www.chezmoi.io/))
 
 ## Post-Setup Configuration
 
