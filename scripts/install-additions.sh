@@ -49,6 +49,14 @@ fi
 echo "Installing ai tools..."
 install_packages "${AI_TOOLS[@]}"
 
+# Remove Omarchy's npx wrapper for pi so the native Arch binary at /usr/bin/pi is used
+if [[ -f "$HOME/.local/bin/pi" ]] && command -v pi &>/dev/null; then
+    if grep -q 'npx' "$HOME/.local/bin/pi" 2>/dev/null; then
+        echo "Removing Omarchy npx wrapper for pi (using native Arch binary)..."
+        rm -f "$HOME/.local/bin/pi"
+    fi
+fi
+
 echo "Installing development tools..."
 echo "  - Language tools..."
 install_packages "${DEV_TOOLS_LANGUAGES[@]}"
