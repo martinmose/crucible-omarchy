@@ -5,6 +5,11 @@ is_installed() {
     pacman -Qi "$1" &>/dev/null
 }
 
+# Function to check an exact installed package name, ignoring virtual providers
+is_exact_package_installed() {
+    pacman -Qq | grep -Fxq -- "$1"
+}
+
 # Function to check if a package is installed
 is_group_installed() {
     pacman -Qg "$1" &>/dev/null
@@ -23,6 +28,6 @@ install_packages() {
 
     if [ ${#to_install[@]} -ne 0 ]; then
         echo "Installing: ${to_install[*]}"
-        yay -S --noconfirm "${to_install[@]}"
+        yay -S --needed --noconfirm --answerclean None --answerdiff None "${to_install[@]}"
     fi
 }

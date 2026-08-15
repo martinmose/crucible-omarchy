@@ -8,7 +8,7 @@ This project is inspired by [Crucible](https://github.com/typecraft-dev/crucible
 
 ## Prerequisites
 
-- Base Omarchy installation (see installation guide below)
+- Omarchy 4.0 or later (see installation guide below)
 
 ## Arch Linux + Omarchy Installation
 

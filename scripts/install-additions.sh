@@ -16,7 +16,7 @@ clear
 print_logo
 
 # Exit on any error
-set -e
+set -euo pipefail
 
 source "$(dirname "$0")/utils.sh"
 
@@ -27,13 +27,38 @@ fi
 
 source "$(dirname "$0")/../additional-packages.conf"
 
-# Omarchy bin directory
-OMARCHY_BIN="$HOME/.local/share/omarchy/bin"
+required_omarchy_commands=(
+    omarchy-webapp-install
+    omarchy-theme-set
+    omarchy-font-set
+    omarchy-install-terminal
+    omarchy-mise-install
+    omarchy-pkg-add
+)
+
+for command in "${required_omarchy_commands[@]}"; do
+    if ! command -v "$command" &>/dev/null; then
+        echo "Error: Required Omarchy command not found: $command"
+        exit 1
+    fi
+done
 
 echo "Starting system setup..."
 
+legacy_packages=()
+for package in "${LEGACY_PACKAGES[@]}"; do
+    if is_exact_package_installed "$package"; then
+        legacy_packages+=("$package")
+    fi
+done
+
+if [ ${#legacy_packages[@]} -gt 0 ]; then
+    echo "Removing packages replaced by Omarchy 4 equivalents: ${legacy_packages[*]}"
+    sudo pacman -Rns --noconfirm "${legacy_packages[@]}"
+fi
+
 echo "Updating system..."
-sudo pacman -Syu --noconfirm
+omarchy update -y
 
 echo "Installing system utilities..."
 install_packages "${SYSTEM_UTILS[@]}"
@@ -49,13 +74,11 @@ fi
 echo "Installing ai tools..."
 install_packages "${AI_TOOLS[@]}"
 
-# Remove Omarchy's npx wrapper for pi so the native Arch binary at /usr/bin/pi is used
-if [[ -f "$HOME/.local/bin/pi" ]] && command -v pi &>/dev/null; then
-    if grep -q 'npx' "$HOME/.local/bin/pi" 2>/dev/null; then
-        echo "Removing Omarchy npx wrapper for pi (using native Arch binary)..."
-        rm -f "$HOME/.local/bin/pi"
-    fi
-fi
+for tool in "${MISE_AI_TOOLS[@]}"; do
+    echo "Installing mise-managed AI tool: $tool"
+    omarchy-mise-install "$tool"
+    MISE_MINIMUM_RELEASE_AGE=0 mise use -g "$tool"
+done
 
 echo "Installing development tools..."
 echo "  - Language tools..."
@@ -109,6 +132,9 @@ fi
 # Install pnpm global packages
 if [ ${#PNPM_PACKAGES[@]} -gt 0 ] && command -v pnpm &>/dev/null; then
     echo "Installing pnpm global packages..."
+    export PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
+    export PATH="$PNPM_HOME:$PNPM_HOME/bin:$PATH"
+    export PNPM_CONFIG_GLOBAL_BIN_DIR="$PNPM_HOME"
     for package in "${PNPM_PACKAGES[@]}"; do
         echo "Installing pnpm package: $package"
         pnpm add -g "$package" || echo "Warning: Failed to install pnpm package $package"
@@ -153,7 +179,7 @@ if [ ${#WEBAPPS[@]} -gt 0 ]; then
 
         if [ -n "$app_name" ] && [ -n "$app_url" ] && [ -n "$icon_url" ]; then
             echo "Installing web app: $app_name"
-            "$OMARCHY_BIN/omarchy-webapp-install" "$app_name" "$app_url" "$icon_url" || echo "Warning: Failed to install $app_name"
+            omarchy-webapp-install "$app_name" "$app_url" "$icon_url" || echo "Warning: Failed to install $app_name"
         else
             echo "Warning: Invalid webapp format: $webapp"
         fi
@@ -175,36 +201,41 @@ if is_installed "gnome-keyring"; then
     fi
 fi
 
-# Add Nord background to Gruvbox theme
-nord_bg="/home/martinmose/.local/share/omarchy/themes/nord/backgrounds/1-nord.png"
-gruvbox_bg_dir="/home/martinmose/.local/share/omarchy/themes/gruvbox/backgrounds"
-gruvbox_nord_bg="$gruvbox_bg_dir/1-nord.png"
+# Add a Nord background as a user-owned Gruvbox override
+nord_bg="${OMARCHY_PATH:-/usr/share/omarchy}/themes/nord/backgrounds/1-city-view.png"
+gruvbox_bg_dir="$HOME/.config/omarchy/backgrounds/gruvbox"
+gruvbox_nord_bg="$gruvbox_bg_dir/1-city-view.png"
 
 if [ -f "$nord_bg" ] && [ ! -f "$gruvbox_nord_bg" ]; then
     echo "Adding Nord background to Gruvbox theme..."
-    cp "$nord_bg" "$gruvbox_bg_dir/" || echo "Warning: Failed to copy Nord background"
+    mkdir -p "$gruvbox_bg_dir"
+    cp "$nord_bg" "$gruvbox_nord_bg" || echo "Warning: Failed to copy Nord background"
 else
     echo "Nord background already exists in Gruvbox theme or source not found"
 fi
 
 # Set Omarchy theme
 echo "Setting Gruvbox theme..."
-"$OMARCHY_BIN/omarchy-theme-set" Gruvbox || echo "Warning: Failed to set theme"
+omarchy-theme-set Gruvbox || echo "Warning: Failed to set theme"
 
 # Set Omarchy font
 echo "Setting FiraCode font..."
-"$OMARCHY_BIN/omarchy-font-set" "FiraCode Nerd Font" || echo "Warning: Failed to set font"
+if [[ $(fc-match -f '%{family}\n' monospace | head -n1) != "FiraCode Nerd Font" ]]; then
+    omarchy-font-set "FiraCode Nerd Font" || echo "Warning: Failed to set font"
+else
+    echo "FiraCode is already the default font."
+fi
 
 # Install Ghostty terminal as the last step
 echo "Checking Ghostty terminal..."
-current_terminal=$(grep "export TERMINAL=" ~/.config/uwsm/default 2>/dev/null | cut -d'=' -f2)
-if [ "$current_terminal" != "ghostty" ]; then
+if [[ ! -f "$HOME/.config/xdg-terminals.list" ]] ||
+    ! grep -Fxq "com.mitchellh.ghostty.desktop" "$HOME/.config/xdg-terminals.list"; then
     echo "Installing and setting Ghostty as default terminal..."
-    "$OMARCHY_BIN/omarchy-install-terminal" ghostty || echo "Warning: Failed to install Ghostty terminal"
+    omarchy-install-terminal ghostty || echo "Warning: Failed to install Ghostty terminal"
 else
     echo "Ghostty is already the default terminal, skipping installation prompt."
     # Just ensure the package is installed without changing settings
-    "$OMARCHY_BIN/omarchy-pkg-add" ghostty 2>/dev/null || true
+    omarchy-pkg-add ghostty 2>/dev/null || true
 fi
 
 echo "Setup complete! You may want to reboot your system."
