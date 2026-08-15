@@ -15,7 +15,7 @@ clear
 print_logo
 
 # Exit on any error
-set -e
+set -euo pipefail
 
 # Ensure script is not run as root
 if [ "$EUID" -eq 0 ]; then
@@ -26,10 +26,27 @@ fi
 
 source "$(dirname "$0")/utils.sh"
 
+required_omarchy_commands=(
+    omarchy-hook-install
+    omarchy-webapp-remove
+)
+
+for command in "${required_omarchy_commands[@]}"; do
+    if ! command -v "$command" &>/dev/null; then
+        echo "Error: Required Omarchy command not found: $command"
+        exit 1
+    fi
+done
+
 echo "Removing unwanted default Omarchy packages..."
 
 # Load configuration
 source "$(dirname "$0")/../uninstall-packages.conf"
+
+mkdir -p "$HOME/.config/omarchy/crucible"
+cp "$(dirname "$0")/../uninstall-packages.conf" \
+    "$HOME/.config/omarchy/crucible/uninstall-packages.conf"
+omarchy-hook-install post-update "$(dirname "$0")/remove-default-webapps.sh"
 
 # Use PACKAGES from config file
 PACKAGES_TO_REMOVE=("${PACKAGES[@]}")
@@ -58,6 +75,12 @@ remove_packages() {
     fi
 }
 
+remove_stale_launchers() {
+    if ! command -v alacritty &>/dev/null; then
+        rm -f "$HOME/.local/share/applications/Alacritty.desktop"
+    fi
+}
+
 # Remove packages if any are defined
 if [ ${#PACKAGES_TO_REMOVE[@]} -ne 0 ]; then
     remove_packages "${PACKAGES_TO_REMOVE[@]}"
@@ -65,6 +88,8 @@ else
     echo "No packages configured for removal."
     echo "Edit this script and uncomment packages you want to remove."
 fi
+
+remove_stale_launchers
 
 # Remove web apps using web2app-remove
 echo "Removing Omarchy web apps..."
@@ -75,7 +100,7 @@ for app in "${WEBAPPS[@]}"; do
     
     if [ -f "$desktop_file" ]; then
         echo "Removing web app: $app_name"
-        ~/.local/share/omarchy/bin/omarchy-webapp-remove "$app_name" || echo "Warning: Some files for $app_name were already removed"
+        omarchy-webapp-remove "$app_name" || echo "Warning: Some files for $app_name were already removed"
     else
         echo "Web app $app_name not found, skipping"
     fi
