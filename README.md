@@ -58,6 +58,7 @@ This interactive script will let you choose what to do:
 - **Full setup**: Remove unwanted defaults + install additions + setup dotfiles
 - **Remove defaults only**: Clean up Omarchy packages you don't want
 - **Install additions only**: Add your preferred packages
+- **Install plugins only**: Add and enable the Omarchy shell plugins listed in `plugins.conf`
 - **Setup dotfiles only**: Configure personal dotfiles (managed with [chezmoi](https://www.chezmoi.io/))
 
 ## Post-Setup Configuration
@@ -152,6 +153,36 @@ WEBAPPS=(
 
 **Finding Icons:**
 Icons can be found at [Dashboard Icons](https://dashboardicons.com/). Use the CDN URL format: `https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/[icon-name].png`
+
+### Omarchy Plugins
+
+Omarchy 4 has a plugin system for the shell (bar widgets, panels, services). The plugins to install are listed in `plugins.conf` and installed by `./scripts/install-plugins.sh` (also part of the full setup).
+
+**Format:**
+```bash
+PLUGINS=(
+  "plugin-id|git-url|scope|post-install"
+)
+```
+
+- `plugin-id`: the `id` from the plugin's `manifest.json`. Used to detect an existing install under `~/.config/omarchy/plugins/<id>`.
+- `git-url`: the repo passed to `omarchy plugin add`.
+- `scope`: `all` installs on every machine without asking. `optional` prompts with `[y/N]` so a machine can skip it.
+- `post-install`: optional script inside the plugin directory to run once after a fresh install (for example `setup`). Leave empty for none.
+
+**Example:**
+```bash
+PLUGINS=(
+  "zeru.portwatch|https://github.com/ZerubbabelT/portwatch.git|all|"
+  "io.github.thisisgm.omapods|https://github.com/thisisgm/omarchy-pods.git|optional|setup"
+)
+```
+
+Plugins are enabled after install and placed in the bar section their manifest declares as default. The script is idempotent: plugins already present are left alone, only re-enabled if needed. Update installed plugins with `omarchy plugin update` and remove one with `omarchy plugin remove <id>`.
+
+Currently configured:
+- [Port Watch](https://github.com/ZerubbabelT/portwatch): listening ports and dev servers in the bar, with a kill button per row. Installed everywhere.
+- [AirPods](https://github.com/thisisgm/omarchy-pods): per-pod and case battery plus listening modes. Optional, since it only makes sense on machines with Bluetooth and AirPods. Its `setup` script builds the bundled librepods daemon into `~/.local` and enables `librepods.service`.
 
 ## Known Issues
 

@@ -30,18 +30,20 @@ echo ""
 echo "This will customize your Omarchy installation with:"
 echo "1. Remove unwanted default packages"
 echo "2. Install additional packages you want"
-echo "3. Setup personal dotfiles"
+echo "3. Install Omarchy plugins"
+echo "4. Setup personal dotfiles"
 echo ""
 
 echo "What would you like to do?"
-echo "1) Full setup (remove defaults + install additions + setup dotfiles)"
+echo "1) Full setup (remove defaults + install additions + plugins + setup dotfiles)"
 echo "2) Remove unwanted default packages only"
 echo "3) Install additional packages only"
-echo "4) Setup dotfiles only"
-echo "5) Exit"
+echo "4) Install Omarchy plugins only"
+echo "5) Setup dotfiles only"
+echo "6) Exit"
 echo ""
 
-read -p "Enter your choice (1-5): " choice
+read -p "Enter your choice (1-6): " choice
 
 case $choice in
 1)
@@ -72,7 +74,14 @@ case $choice in
   fi
 
   echo ""
-  echo "Step 4: Setting up dotfiles..."
+  echo "Step 4: Installing Omarchy plugins..."
+  if ! ./scripts/install-plugins.sh; then
+    echo "ERROR: Failed to install plugins!"
+    exit 1
+  fi
+
+  echo ""
+  echo "Step 5: Setting up dotfiles..."
   if ! ./scripts/dotfiles-setup.sh; then
     echo "ERROR: Failed to setup dotfiles!"
     exit 1
@@ -93,10 +102,15 @@ case $choice in
   ;;
 4)
   echo ""
+  echo "Installing Omarchy plugins..."
+  ./scripts/install-plugins.sh
+  ;;
+5)
+  echo ""
   echo "Setting up dotfiles..."
   ./scripts/dotfiles-setup.sh
   ;;
-5)
+6)
   echo "Exiting..."
   exit 0
   ;;
