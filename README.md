@@ -117,6 +117,10 @@ sudo tailscale up --ssh
 2. Follow the authentication link in your terminal
 3. Sign in with your Tailscale account to connect this device to your network
 
+### Podman (Rootless Containers)
+
+Podman is installed instead of relying on the Docker daemon, so containers run as your user without sudo or the docker group. Podman Desktop provides the GUI. See [podman-setup.md](docs/podman-setup.md) for the socket, compose and Docker removal details.
+
 ### Danish Character Setup
 
 For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](docs/keyd-setup.md) for configuration details.

@@ -93,6 +93,36 @@ fi
 echo "  - Neovim tools..."
 install_packages "${DEV_TOOLS_NVIM[@]}"
 
+echo "  - Container tools..."
+install_packages "${CONTAINER_TOOLS[@]}"
+
+# Configure rootless Podman: user API socket (Podman Desktop, lazydocker and
+# docker-compose talk to it), restart unit (honours restart policies on boot)
+# and linger (user units run without an active login session).
+if is_installed "podman"; then
+    echo "Configuring rootless Podman..."
+
+    # Rootless Podman needs a subordinate UID/GID range. useradd normally
+    # creates one (login.defs SUB_UID_COUNT), so this only fires on accounts
+    # that predate that default.
+    if ! grep -q "^$USER:" /etc/subuid 2>/dev/null || ! grep -q "^$USER:" /etc/subgid 2>/dev/null; then
+        echo "Adding subordinate UID/GID range for $USER..."
+        sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 "$USER" || echo "Warning: Failed to add subuid/subgid range"
+    fi
+
+    systemctl --user enable --now podman.socket || echo "Warning: Failed to enable podman.socket"
+    systemctl --user enable podman-restart.service || echo "Warning: Failed to enable podman-restart.service"
+    loginctl enable-linger "$USER" || echo "Warning: Failed to enable linger for $USER"
+
+    # GPU access inside containers (--device nvidia.com/gpu=0). The Arch package
+    # ships a pacman hook that generates /etc/cdi/nvidia.yaml on install and on
+    # every driver update, so nothing else is needed.
+    if command -v nvidia-smi &>/dev/null; then
+        echo "NVIDIA GPU detected, installing container toolkit for CDI..."
+        install_packages nvidia-container-toolkit
+    fi
+fi
+
 echo "Installing applications..."
 install_packages "${APPLICATIONS[@]}"
 

@@ -68,6 +68,13 @@ remove_packages() {
     done
 
     if [ ${#to_remove[@]} -ne 0 ]; then
+        # Stop and disable the Docker units before the package takes them away,
+        # so pacman does not leave dangling sockets.target.wants symlinks behind.
+        if printf '%s\n' "${to_remove[@]}" | grep -qx "docker"; then
+            echo "Disabling Docker units..."
+            sudo systemctl disable --now docker.socket docker.service 2>/dev/null || true
+        fi
+
         echo "Removing: ${to_remove[*]}"
         yay -Rns --noconfirm "${to_remove[@]}"
     else
