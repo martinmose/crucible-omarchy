@@ -126,6 +126,10 @@ Podman is installed instead of relying on the Docker daemon, so containers run a
 
 For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](docs/keyd-setup.md) for configuration details.
 
+### Python Tooling (uv)
+
+`uv` is installed instead of `pip`, and Neovim uses `basedpyright` via Mason. See [python-tooling.md](docs/python-tooling.md) for the migration steps on an existing machine.
+
 ### Voxtype (Voice-to-Text)
 
 If you opted into voice tools during setup, voxtype should already be running. For manual setup or troubleshooting, see [voxtype-setup.md](docs/voxtype-setup.md).
