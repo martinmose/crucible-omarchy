@@ -74,10 +74,12 @@ fi
 echo "Installing ai tools..."
 install_packages "${AI_TOOLS[@]}"
 
-for tool in "${MISE_AI_TOOLS[@]}"; do
-    echo "Installing mise-managed AI tool: $tool"
-    omarchy-mise-install "$tool"
-    MISE_MINIMUM_RELEASE_AGE=0 mise use -g "$tool"
+for entry in "${MISE_AI_TOOLS[@]}"; do
+    read -r package command <<<"$entry"
+    command=${command:-$package}
+    echo "Installing mise-managed AI tool: $package (as $command)"
+    omarchy-mise-install "$package" "$command"
+    MISE_MINIMUM_RELEASE_AGE=0 mise use -g "$package"
 done
 
 echo "Installing development tools..."
