@@ -130,6 +130,10 @@ For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](d
 
 `uv` is installed instead of `pip`, and Neovim uses `basedpyright` via Mason. See [python-tooling.md](docs/python-tooling.md) for the migration steps on an existing machine.
 
+### Elgato Stream Deck and XLR (OpenDeck, OpenXLR)
+
+If you opted into Elgato tools during setup, OpenDeck (Stream Deck) and OpenXLR (Wave XLR / XLR Dock) are installed, the OpenXLR daemon is enabled and its Stream Deck plugin is registered with OpenDeck. See [elgato-setup.md](docs/elgato-setup.md) for the manual steps and the replug note.
+
 ### Voxtype (Voice-to-Text)
 
 If you opted into voice tools during setup, voxtype should already be running. For manual setup or troubleshooting, see [voxtype-setup.md](docs/voxtype-setup.md).

@@ -161,6 +161,34 @@ if [ ${#VOICE_TOOLS[@]} -gt 0 ]; then
     fi
 fi
 
+# Optional: Elgato tools (Stream Deck via OpenDeck, XLR interfaces via OpenXLR)
+if [ ${#ELGATO_TOOLS[@]} -gt 0 ]; then
+    read -p "Would you like to install Elgato tools (OpenDeck for Stream Deck, OpenXLR for Wave XLR / XLR Dock)? [y/N]: " install_elgato
+    if [[ "$install_elgato" =~ ^[Yy]$ ]]; then
+        echo "Installing Elgato tools..."
+        install_packages "${ELGATO_TOOLS[@]}"
+
+        if is_installed "openxlr"; then
+            echo "Enabling OpenXLR daemon..."
+            systemctl --user enable --now openxlr-daemon || echo "Warning: Failed to enable user service openxlr-daemon"
+
+            # OpenXLR ships a Stream Deck plugin that OpenDeck only picks up
+            # from its user plugin directory.
+            openxlr_plugin="/usr/share/openxlr/com.emaspa.openxlr.sdPlugin"
+            opendeck_plugins="$HOME/.config/opendeck/plugins"
+            if is_installed "opendeck-bin" && [ -d "$openxlr_plugin" ] && [ ! -d "$opendeck_plugins/$(basename "$openxlr_plugin")" ]; then
+                echo "Installing OpenXLR plugin for OpenDeck..."
+                mkdir -p "$opendeck_plugins"
+                cp -r "$openxlr_plugin" "$opendeck_plugins/" || echo "Warning: Failed to copy OpenXLR plugin for OpenDeck"
+            fi
+
+            echo "Note: replug the Elgato XLR interface once so the udev rule applies."
+        fi
+    else
+        echo "Skipping Elgato tools."
+    fi
+fi
+
 # Install pnpm global packages
 if [ ${#PNPM_PACKAGES[@]} -gt 0 ] && command -v pnpm &>/dev/null; then
     echo "Installing pnpm global packages..."
