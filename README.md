@@ -6,6 +6,18 @@ My personal customization and automation tool for customizes Omarchy with additi
 
 This project is inspired by [Crucible](https://github.com/typecraft-dev/crucible) by [typecraft](https://x.com/typecraft_dev)
 
+## Tool Ownership
+
+Crucible owns OS packages, desktop apps, services, and Omarchy setup. Dotfiles
+owns configuration, skills, and a separate mise manifest for personally managed
+portable CLIs. Do not add a tool to both installation lists.
+
+The shared policy and inventory live in
+[dotfiles: tool management](https://github.com/martinmose/.dotfiles/blob/main/docs/tool-management.md)
+(locally: `~/.dotfiles/docs/tool-management.md`). After dotfiles deployment,
+inspect `mise ls --current` and run `mise install` to install the declared tools;
+for only Agent Browser, use `mise install npm:agent-browser`.
+
 ## Prerequisites
 
 - Omarchy 4.0 or later (see installation guide below)
