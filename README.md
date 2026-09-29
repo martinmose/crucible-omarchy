@@ -146,6 +146,10 @@ For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](d
 
 If you opted into Elgato tools during setup, OpenDeck (Stream Deck) and OpenXLR (Wave XLR / XLR Dock) are installed, the OpenXLR daemon is enabled and its Stream Deck plugin is registered with OpenDeck. See [elgato-setup.md](docs/elgato-setup.md) for the manual steps and the replug note.
 
+### Token Monitor
+
+Token Monitor (token usage and limits widget for AI coding tools) has no Arch package and ships Linux builds only as an AppImage, so it runs from a pinned source checkout on the system `electron43`. `./scripts/install-token-monitor.sh` installs and updates it; the dotfiles provide the launcher. See [token-monitor-setup.md](docs/token-monitor-setup.md) for updating and uninstalling.
+
 ### Voxtype (Voice-to-Text)
 
 If you opted into voice tools during setup, voxtype should already be running. For manual setup or troubleshooting, see [voxtype-setup.md](docs/voxtype-setup.md).
