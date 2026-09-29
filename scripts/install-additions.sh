@@ -128,6 +128,9 @@ fi
 echo "Installing applications..."
 install_packages "${APPLICATIONS[@]}"
 
+echo "Installing Token Monitor..."
+"$(dirname "$0")/install-token-monitor.sh" || echo "Warning: Failed to install Token Monitor"
+
 # Optional installs
 echo ""
 echo "Optional packages:"
