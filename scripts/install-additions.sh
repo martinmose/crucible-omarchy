@@ -189,6 +189,22 @@ if [ ${#ELGATO_TOOLS[@]} -gt 0 ]; then
     fi
 fi
 
+# Optional: Cooling tools (fan/pump control)
+if [ ${#COOLING_TOOLS[@]} -gt 0 ]; then
+    read -p "Would you like to install cooling tools (CoolerControl, liquidctl)? [y/N]: " install_cooling
+    if [[ "$install_cooling" =~ ^[Yy]$ ]]; then
+        echo "Installing cooling tools..."
+        install_packages "${COOLING_TOOLS[@]}"
+
+        if is_installed "coolercontrol-bin"; then
+            echo "Enabling service: coolercontrold"
+            sudo systemctl enable --now coolercontrold || echo "Warning: Failed to enable coolercontrold"
+        fi
+    else
+        echo "Skipping cooling tools."
+    fi
+fi
+
 # Install pnpm global packages
 if [ ${#PNPM_PACKAGES[@]} -gt 0 ] && command -v pnpm &>/dev/null; then
     echo "Installing pnpm global packages..."
