@@ -205,6 +205,23 @@ if [ ${#COOLING_TOOLS[@]} -gt 0 ]; then
     fi
 fi
 
+# Optional: WireView Pro II (GPU power monitor exposed through hwmon)
+if [ ${#WIREVIEW_TOOLS[@]} -gt 0 ]; then
+    read -p "Would you like to install WireView tools (Thermal Grizzly WireView Pro II GPU power monitor)? [y/N]: " install_wireview
+    if [[ "$install_wireview" =~ ^[Yy]$ ]]; then
+        echo "Installing WireView tools..."
+        install_packages "${WIREVIEW_TOOLS[@]}"
+
+        # The unit loads the wireview_hwmon module before the daemon starts.
+        if is_installed "wireview-hwmon"; then
+            echo "Enabling WireView daemon..."
+            sudo systemctl enable --now wireviewd || echo "Warning: Failed to enable wireviewd"
+        fi
+    else
+        echo "Skipping WireView tools."
+    fi
+fi
+
 # Install pnpm global packages
 if [ ${#PNPM_PACKAGES[@]} -gt 0 ] && command -v pnpm &>/dev/null; then
     echo "Installing pnpm global packages..."

@@ -146,6 +146,10 @@ For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](d
 
 If you opted into Elgato tools during setup, OpenDeck (Stream Deck) and OpenXLR (Wave XLR / XLR Dock) are installed, the OpenXLR daemon is enabled and its Stream Deck plugin is registered with OpenDeck. See [elgato-setup.md](docs/elgato-setup.md) for the manual steps and the replug note.
 
+### WireView Pro II (GPU Power Monitor)
+
+If you opted into WireView tools during setup, `wireviewd` is enabled and the `wireview_hwmon` module exposes per-pin voltage, current, power and temperatures to `sensors` and `/sys/class/hwmon`. See [wireview-setup.md](docs/wireview-setup.md) for the manual steps and security notes.
+
 ### Voxtype (Voice-to-Text)
 
 If you opted into voice tools during setup, voxtype should already be running. For manual setup or troubleshooting, see [voxtype-setup.md](docs/voxtype-setup.md).
