@@ -164,8 +164,11 @@ You can add custom web applications that will be installed as desktop applicatio
 ```bash
 WEBAPPS=(
   "App Name|URL|Icon URL"
+  "App Name|URL|Icon URL|Custom launch command"
 )
 ```
+
+The optional fourth field replaces the default `omarchy-launch-webapp <url>` launch command, e.g. `webapp-brave <url>` to open the app in a specific browser.
 
 **Example:**
 ```bash
