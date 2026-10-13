@@ -150,6 +150,10 @@ If you opted into Elgato tools during setup, OpenDeck (Stream Deck) and OpenXLR 
 
 If you opted into WireView tools during setup, `wireviewd` is enabled and the `wireview_hwmon` module exposes per-pin voltage, current, power and temperatures to `sensors` and `/sys/class/hwmon`. See [wireview-setup.md](docs/wireview-setup.md) for the manual steps and security notes.
 
+### Mosh over Tailscale (Moshi on iOS)
+
+If you opted into mosh during setup, `sshd` runs with key-only logins, SSH and mosh are open on `tailscale0` only, and Tailscale SSH is turned off once `~/.ssh/authorized_keys` has a key, because Moshi cannot start `mosh-server` through Tailscale SSH. Add one public key per client device to `authorized_keys` before relying on it. Clients that used Tailscale SSH before will see a changed host key. To go back, run `sudo tailscale set --ssh=true`.
+
 ### Voxtype (Voice-to-Text)
 
 If you opted into voice tools during setup, voxtype should already be running. For manual setup or troubleshooting, see [voxtype-setup.md](docs/voxtype-setup.md).

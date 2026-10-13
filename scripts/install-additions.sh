@@ -222,6 +222,45 @@ if [ ${#WIREVIEW_TOOLS[@]} -gt 0 ]; then
     fi
 fi
 
+# Optional: mosh over Tailscale (OpenSSH with keys replaces Tailscale SSH)
+if [ ${#MOSH_TOOLS[@]} -gt 0 ]; then
+    read -p "Would you like to set up mosh over Tailscale (OpenSSH with keys instead of Tailscale SSH, e.g. for Moshi on iOS)? [y/N]: " install_mosh
+    if [[ "$install_mosh" =~ ^[Yy]$ ]]; then
+        echo "Installing mosh tools..."
+        install_packages "${MOSH_TOOLS[@]}"
+
+        # Key-only logins; Arch's sshd allows passwords by default.
+        echo "Configuring sshd for key-only logins..."
+        printf '%s\n' \
+            "# Written by crucible-omarchy: key-only logins, ufw limits port 22 to the tailnet" \
+            "PasswordAuthentication no" \
+            "PermitRootLogin no" | sudo tee /etc/ssh/sshd_config.d/50-local.conf >/dev/null
+        sudo ssh-keygen -A
+
+        # SSH and mosh from the tailnet only; Omarchy's ufw drops other input.
+        if command -v ufw &>/dev/null; then
+            sudo ufw allow in on tailscale0 to any port 22 proto tcp comment "ssh over tailnet"
+            sudo ufw allow in on tailscale0 to any port 60000:61000 proto udp comment "mosh over tailnet"
+        fi
+
+        if sudo sshd -t; then
+            sudo systemctl enable --now sshd || echo "Warning: Failed to enable sshd"
+        else
+            echo "Warning: sshd config test failed, not starting sshd"
+        fi
+
+        # Tailscale SSH answers port 22 on the tailnet ahead of sshd. Turn it off
+        # only when a key can log in, so the machine stays reachable.
+        if [ -s "$HOME/.ssh/authorized_keys" ]; then
+            sudo tailscale set --ssh=false || echo "Warning: Failed to turn off Tailscale SSH"
+        else
+            echo "Note: add client public keys to ~/.ssh/authorized_keys, then run: sudo tailscale set --ssh=false"
+        fi
+    else
+        echo "Skipping mosh tools."
+    fi
+fi
+
 # Install pnpm global packages
 if [ ${#PNPM_PACKAGES[@]} -gt 0 ] && command -v pnpm &>/dev/null; then
     echo "Installing pnpm global packages..."
