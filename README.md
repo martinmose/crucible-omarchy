@@ -134,6 +134,10 @@ sudo tailscale up --ssh
 
 Podman is installed instead of relying on the Docker daemon, so containers run as your user without sudo or the docker group. Podman Desktop provides the GUI. See [podman-setup.md](docs/podman-setup.md) for the socket, compose and Docker removal details.
 
+### FIDO2 Security Keys (YubiKey)
+
+If you opted into FIDO2 during setup, `sudo` and polkit prompts accept a touch of the registered key or your password. Omarchy's setup registers one key; see [fido2-setup.md](docs/fido2-setup.md) for adding backup keys, verifying and removing it.
+
 ### Danish Character Setup
 
 For Danish character shortcuts using Alt key combinations, see [keyd-setup.md](docs/keyd-setup.md) for configuration details.

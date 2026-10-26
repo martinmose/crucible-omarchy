@@ -261,6 +261,18 @@ if [ ${#MOSH_TOOLS[@]} -gt 0 ]; then
     fi
 fi
 
+# Optional: FIDO2 security key (e.g. YubiKey) for sudo and polkit. Omarchy's
+# setup installs libfido2 and pam-u2f, registers the plugged-in key and adds it
+# as sufficient auth, so the password still works. It registers one key; see
+# docs/fido2-setup.md for adding more.
+read -p "Would you like to set up a FIDO2 security key (e.g. YubiKey) for sudo and polkit? Plug it in first. [y/N]: " setup_fido2
+if [[ "$setup_fido2" =~ ^[Yy]$ ]]; then
+    echo "Setting up FIDO2 security key..."
+    omarchy-setup-security-fido2 || echo "Warning: FIDO2 setup failed. Plug in the key and run: omarchy setup security fido2"
+else
+    echo "Skipping FIDO2 security key."
+fi
+
 # Install pnpm global packages
 if [ ${#PNPM_PACKAGES[@]} -gt 0 ] && command -v pnpm &>/dev/null; then
     echo "Installing pnpm global packages..."
