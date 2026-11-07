@@ -128,6 +128,12 @@ fi
 echo "Installing applications..."
 install_packages "${APPLICATIONS[@]}"
 
+# Brave and Brave Origin: no Cast discovery, so no mDNS listener on :5353.
+# Root-owned, so Omarchy's policy refresh (it purges non-root files) keeps it.
+echo "Disabling Brave Media Router (Cast)..."
+sudo install -d -m 0755 /etc/brave/policies/managed
+echo '{"EnableMediaRouter": false}' | sudo tee /etc/brave/policies/managed/media-router.json >/dev/null
+
 # Optional installs
 echo ""
 echo "Optional packages:"
