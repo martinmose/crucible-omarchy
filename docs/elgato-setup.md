@@ -8,7 +8,7 @@ The install script will prompt you to optionally install Elgato tools. If you pr
 
 1. Install the packages:
 ```bash
-yay -S opendeck-bin openxlr
+yay -S opendeck openxlr
 ```
 
 2. Replug the XLR interface once so the udev rule applies.

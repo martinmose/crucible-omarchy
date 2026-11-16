@@ -72,7 +72,6 @@ else
 fi
 
 echo "Installing ai tools..."
-install_packages "${AI_TOOLS[@]}"
 
 for entry in "${MISE_AI_TOOLS[@]}"; do
     read -r package command <<<"$entry"
@@ -182,7 +181,7 @@ if [ ${#ELGATO_TOOLS[@]} -gt 0 ]; then
             # from its user plugin directory.
             openxlr_plugin="/usr/share/openxlr/com.emaspa.openxlr.sdPlugin"
             opendeck_plugins="$HOME/.config/opendeck/plugins"
-            if is_installed "opendeck-bin" && [ -d "$openxlr_plugin" ] && [ ! -d "$opendeck_plugins/$(basename "$openxlr_plugin")" ]; then
+            if is_installed "opendeck" && [ -d "$openxlr_plugin" ] && [ ! -d "$opendeck_plugins/$(basename "$openxlr_plugin")" ]; then
                 echo "Installing OpenXLR plugin for OpenDeck..."
                 mkdir -p "$opendeck_plugins"
                 cp -r "$openxlr_plugin" "$opendeck_plugins/" || echo "Warning: Failed to copy OpenXLR plugin for OpenDeck"
@@ -197,15 +196,10 @@ fi
 
 # Optional: Cooling tools (fan/pump control)
 if [ ${#COOLING_TOOLS[@]} -gt 0 ]; then
-    read -p "Would you like to install cooling tools (CoolerControl, liquidctl)? [y/N]: " install_cooling
+    read -p "Would you like to install cooling tools (liquidctl)? [y/N]: " install_cooling
     if [[ "$install_cooling" =~ ^[Yy]$ ]]; then
         echo "Installing cooling tools..."
         install_packages "${COOLING_TOOLS[@]}"
-
-        if is_installed "coolercontrol-bin"; then
-            echo "Enabling service: coolercontrold"
-            sudo systemctl enable --now coolercontrold || echo "Warning: Failed to enable coolercontrold"
-        fi
     else
         echo "Skipping cooling tools."
     fi
