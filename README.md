@@ -158,10 +158,6 @@ If you opted into WireView tools during setup, `wireviewd` is enabled and the `w
 
 If you opted into mosh during setup, `sshd` runs with key-only logins, SSH and mosh are open on `tailscale0` only, and Tailscale SSH is turned off once `~/.ssh/authorized_keys` has a key, because Moshi cannot start `mosh-server` through Tailscale SSH. Add one public key per client device to `authorized_keys` before relying on it. Clients that used Tailscale SSH before will see a changed host key. To go back, run `sudo tailscale set --ssh=true`.
 
-### Voxtype (Voice-to-Text)
-
-If you opted into voice tools during setup, voxtype should already be running. For manual setup or troubleshooting, see [voxtype-setup.md](docs/voxtype-setup.md).
-
 ## Customization
 
 ### Adding Web Apps

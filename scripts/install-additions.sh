@@ -149,23 +149,6 @@ if [ ${#DEV_TOOLS_ANDROID[@]} -gt 0 ]; then
     fi
 fi
 
-# Optional: Voice tools (speech-to-text)
-if [ ${#VOICE_TOOLS[@]} -gt 0 ]; then
-    read -p "Would you like to install voice tools (speech-to-text)? [y/N]: " install_voice
-    if [[ "$install_voice" =~ ^[Yy]$ ]]; then
-        echo "Installing voice tools..."
-        install_packages "${VOICE_TOOLS[@]}"
-
-        # Run voxtype model download if voxtype was installed
-        if is_installed "voxtype-bin"; then
-            echo "Downloading voxtype speech model..."
-            voxtype setup --download || echo "Warning: Failed to download voxtype model"
-        fi
-    else
-        echo "Skipping voice tools."
-    fi
-fi
-
 # Optional: Elgato tools (Stream Deck via OpenDeck, XLR interfaces via OpenXLR)
 if [ ${#ELGATO_TOOLS[@]} -gt 0 ]; then
     read -p "Would you like to install Elgato tools (OpenDeck for Stream Deck, OpenXLR for Wave XLR / XLR Dock)? [y/N]: " install_elgato
