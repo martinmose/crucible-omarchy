@@ -140,10 +140,11 @@ echo "-------------------"
 
 # Optional: Android development tools
 if [ ${#DEV_TOOLS_ANDROID[@]} -gt 0 ]; then
-    read -p "Would you like to install Android development tools (Android Studio, ktlint)? [y/N]: " install_android
+    read -p "Would you like to install Android development tools (Android Studio, ktlint, cargo-ndk)? [y/N]: " install_android
     if [[ "$install_android" =~ ^[Yy]$ ]]; then
         echo "Installing Android development tools..."
         install_packages "${DEV_TOOLS_ANDROID[@]}"
+        CARGO_PACKAGES+=("${DEV_TOOLS_ANDROID_CARGO[@]}") # installed by the cargo step below
     else
         echo "Skipping Android development tools."
     fi
